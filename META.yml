@@ -19,4 +19,4 @@ requires:
   Time::HiRes: '0'
 resources:
   repository: http://github.com/rjbs/app-cronjob/
-version: '1.002'
+version: '1.003'

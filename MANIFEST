@@ -7,3 +7,4 @@ README
 bin/cronjob
 dist.ini
 lib/App/Cronjob.pm
+t/00-pointless.t
