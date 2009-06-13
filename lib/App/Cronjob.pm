@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package App::Cronjob;
-our $VERSION = '1.003';
+our $VERSION = '1.091640';
 
 # ABSTRACT: wrap up programs to be run as cron jobs
 
@@ -15,6 +15,7 @@ use String::Flogger;
 use Sys::Hostname::Long;
 use Text::Template;
 use Time::HiRes ();
+
 
 my $TEMPLATE;
 
@@ -200,7 +201,7 @@ sub send_cronjob_report {
 BEGIN {
 # Sure, a here-doc would be nicer, but PPI hates here-docs, I use PodPurler,
 # and PodPurler uses PPI.  Oh well. -- rjbs, 2009-04-21
-$TEMPLATE = q!
+$TEMPLATE = <<'END_TEMPLATE'
 Command: { $command }
 Time   : { $time }s
 Status : { String::Flogger->flog([ '%s', \%waitpid ]) }
@@ -208,7 +209,7 @@ Status : { String::Flogger->flog([ '%s', \%waitpid ]) }
 Output :
 
 { $output || '(no output)' }
-!
+END_TEMPLATE
 }
 
 {
@@ -231,7 +232,15 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.003
+version 1.091640
+
+=head1 SEE INSTEAD
+
+This library, App::Cronjob, is not well documented.  Its internals may change
+substantially until such point as it is documented.
+
+Instead of using the library, you should run the program F<cronjob> that is
+installed along with the library.
 
 =head1 AUTHOR
 

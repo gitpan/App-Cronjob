@@ -8,8 +8,8 @@ WriteMakefile(
   DISTNAME  => 'App-Cronjob',
   NAME      => 'App::Cronjob',
   AUTHOR    => 'Ricardo\ Signes\ \<rjbs\@cpan\.org\>',
-  ABSTRACT  => 'wrap up programs to be run as cron jobs',
-  VERSION   => '1.003',
+  ABSTRACT  => 'wrap\ up\ programs\ to\ be\ run\ as\ cron\ jobs',
+  VERSION   => '1.091640',
   EXE_FILES => [ qw(bin/cronjob) ],
   (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

@@ -1,7 +1,7 @@
 Changes
 LICENSE
 MANIFEST
-META.yml
+META.json
 Makefile.PL
 README
 bin/cronjob

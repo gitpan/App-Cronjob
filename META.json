@@ -1,0 +1,30 @@
+{
+   "resources" : {
+      "repository" : "http://github.com/rjbs/app-cronjob/tree"
+   },
+   "meta-spec" : {
+      "version" : 1.4,
+      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
+   },
+   "generated_by" : "Dist::Zilla::Plugin::MetaJSON version 1.091480",
+   "version" : "1.091640",
+   "name" : "App-Cronjob",
+   "author" : [
+      "Ricardo Signes <rjbs@cpan.org>"
+   ],
+   "license" : "perl",
+   "requires" : {
+      "Email::Simple::Creator" : "0",
+      "Email::Sender::Transport::Sendmail" : "0",
+      "Time::HiRes" : "0",
+      "Log::Dispatchouli" : "0",
+      "Digest::MD5" : "0",
+      "Getopt::Long::Descriptive" : "0",
+      "Email::Simple" : "0",
+      "Sys::Hostname::Long" : "0",
+      "Errno" : "0",
+      "Text::Template" : "0",
+      "String::Flogger" : "0"
+   },
+   "abstract" : "wrap up programs to be run as cron jobs"
+}
