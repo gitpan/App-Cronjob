@@ -1,0 +1,26 @@
+---
+abstract: 'wrap up programs to be run as cron jobs'
+author:
+  - 'Ricardo Signes <rjbs@cpan.org>'
+generated_by: 'Dist::Zilla version 1.093400'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: App-Cronjob
+requires:
+  Digest::MD5: 0
+  Email::Sender::Transport::Sendmail: 0
+  Email::Simple: 0
+  Email::Simple::Creator: 0
+  Errno: 0
+  Getopt::Long::Descriptive: 0
+  IPC::Run3: 0
+  Log::Dispatchouli: 0
+  String::Flogger: 0
+  Sys::Hostname::Long: 0
+  Text::Template: 0
+  Time::HiRes: 0
+resources:
+  repository: http://github.com/rjbs/app-cronjob
+version: 1.093480

@@ -2,9 +2,12 @@ Changes
 LICENSE
 MANIFEST
 META.json
+META.yml
 Makefile.PL
 README
 bin/cronjob
 dist.ini
 lib/App/Cronjob.pm
 t/00-pointless.t
+t/release-pod-coverage.t
+t/release-pod-syntax.t

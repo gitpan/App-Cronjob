@@ -1,8 +1,7 @@
 use strict;
 use warnings;
 package App::Cronjob;
-our $VERSION = '1.091640';
-
+our $VERSION = '1.093480';
 # ABSTRACT: wrap up programs to be run as cron jobs
 
 use Digest::MD5 qw(md5_hex);
@@ -214,6 +213,7 @@ END_TEMPLATE
 
 {
   package App::Cronjob::Exception;
+our $VERSION = '1.093480';
   sub new {
     my ($class, $type, $text) = @_;
     bless { text => $text, type => $type } => $class;
@@ -223,7 +223,6 @@ END_TEMPLATE
 1;
 
 __END__
-
 =pod
 
 =head1 NAME
@@ -232,7 +231,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.091640
+version 1.093480
 
 =head1 SEE INSTEAD
 
@@ -251,8 +250,7 @@ installed along with the library.
 This software is copyright (c) 2009 by Ricardo Signes.
 
 This is free software; you can redistribute it and/or modify it under
-the same terms as perl itself.
+the same terms as the Perl 5 programming language system itself.
 
-=cut 
-
+=cut
 
