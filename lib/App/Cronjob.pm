@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package App::Cronjob;
-our $VERSION = '1.093480';
+our $VERSION = '1.100070';
 # ABSTRACT: wrap up programs to be run as cron jobs
 
 use Digest::MD5 qw(md5_hex);
@@ -53,6 +53,8 @@ sub run {
   my $lockfile = sprintf '/tmp/cronjob.%s',
                  $opt->{jobname} || md5_hex($subject);
 
+  my $got_lock = 0;
+
   my $okay = eval {
     die "illegal job name: $opt->{jobname}\n"
       if $opt->{jobname} and $opt->{jobname} !~ m{\A[-a-z0-9]+\z};
@@ -86,6 +88,8 @@ sub run {
         );
       }
     }
+
+    $got_lock = 1;
 
     printf $lock_fh "running %s\nstarted at %s\n",
       $opt->{command}, scalar localtime $^T;
@@ -125,7 +129,7 @@ sub run {
     1;
   };
 
-  unlink $lockfile if -e $lockfile;
+  unlink $lockfile if $got_lock and -e $lockfile;
 
   exit 0 if $okay;
   my $err = $@;
@@ -161,7 +165,7 @@ sub send_cronjob_report {
 
   require Email::Simple;
   require Email::Simple::Creator;
-  require Email::Sender::Transport::Sendmail;
+  require Email::Sender::Simple;
   require Text::Template;
 
   my $body     = Text::Template->fill_this_in(
@@ -188,7 +192,7 @@ sub send_cronjob_report {
     ],
   );
 
-  Email::Sender::Transport::Sendmail->new->send(
+  Email::Sender::Simple->send(
     $email,
     {
       to      => $rcpts,
@@ -213,7 +217,7 @@ END_TEMPLATE
 
 {
   package App::Cronjob::Exception;
-our $VERSION = '1.093480';
+our $VERSION = '1.100070';
   sub new {
     my ($class, $type, $text) = @_;
     bless { text => $text, type => $type } => $class;
@@ -231,7 +235,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.093480
+version 1.100070
 
 =head1 SEE INSTEAD
 
@@ -247,7 +251,7 @@ installed along with the library.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Ricardo Signes.
+This software is copyright (c) 2010 by Ricardo Signes.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

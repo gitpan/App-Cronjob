@@ -2,7 +2,7 @@
 abstract: 'wrap up programs to be run as cron jobs'
 author:
   - 'Ricardo Signes <rjbs@cpan.org>'
-generated_by: 'Dist::Zilla version 1.093400'
+generated_by: 'Dist::Zilla version 1.100060'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -10,10 +10,11 @@ meta-spec:
 name: App-Cronjob
 requires:
   Digest::MD5: 0
-  Email::Sender::Transport::Sendmail: 0
+  Email::Sender::Simple: 0.091661
   Email::Simple: 0
   Email::Simple::Creator: 0
   Errno: 0
+  ExtUtils::MakeMaker: 6.11
   Getopt::Long::Descriptive: 0
   IPC::Run3: 0
   Log::Dispatchouli: 0
@@ -23,4 +24,4 @@ requires:
   Time::HiRes: 0
 resources:
   repository: http://github.com/rjbs/app-cronjob
-version: 1.093480
+version: 1.100070
