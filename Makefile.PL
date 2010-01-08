@@ -13,7 +13,7 @@ WriteMakefile(
   NAME      => 'App::Cronjob',
   AUTHOR    => "Ricardo\ Signes\ \<rjbs\@cpan\.org\>",
   ABSTRACT  => "wrap\ up\ programs\ to\ be\ run\ as\ cron\ jobs",
-  VERSION   => '1.100070',
+  VERSION   => '1.100080',
   EXE_FILES => [ "bin\/cronjob" ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

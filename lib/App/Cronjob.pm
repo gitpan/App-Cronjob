@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package App::Cronjob;
-our $VERSION = '1.100070';
+our $VERSION = '1.100080';
 # ABSTRACT: wrap up programs to be run as cron jobs
 
 use Digest::MD5 qw(md5_hex);
@@ -117,11 +117,19 @@ sub run {
     my $send_mail = ($waitpid{status} != 0)
                  || (length $output && ! $opt->{errors_only});
 
+    my $time_taken = sprintf '%0.4f', $end - $start;
+
+    $logger->log([
+      'job completed with status %s after %ss',
+      \%waitpid,
+      $time_taken,
+    ]);
+
     if ($send_mail) {
       send_cronjob_report({
         is_fail => (!! $waitpid{status}),
         waitpid => \%waitpid,
-        time    => \(sprintf '%0.4f', $end - $start),
+        time    => \$time_taken,
         output  => \$output,
       });
     }
@@ -217,7 +225,7 @@ END_TEMPLATE
 
 {
   package App::Cronjob::Exception;
-our $VERSION = '1.100070';
+our $VERSION = '1.100080';
   sub new {
     my ($class, $type, $text) = @_;
     bless { text => $text, type => $type } => $class;
@@ -235,7 +243,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.100070
+version 1.100080
 
 =head1 SEE INSTEAD
 

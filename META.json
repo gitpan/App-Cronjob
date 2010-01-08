@@ -7,7 +7,7 @@
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
    "generated_by" : "Dist::Zilla version 1.100060",
-   "version" : "1.100070",
+   "version" : "1.100080",
    "name" : "App-Cronjob",
    "author" : [
       "Ricardo Signes <rjbs@cpan.org>"
