@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package App::Cronjob;
-our $VERSION = '1.100080';
+BEGIN {
+  $App::Cronjob::VERSION = '1.101230';
+}
 # ABSTRACT: wrap up programs to be run as cron jobs
 
 use Digest::MD5 qw(md5_hex);
@@ -57,7 +59,7 @@ sub run {
 
   my $okay = eval {
     die "illegal job name: $opt->{jobname}\n"
-      if $opt->{jobname} and $opt->{jobname} !~ m{\A[-a-z0-9]+\z};
+      if $opt->{jobname} and $opt->{jobname} !~ m{\A[-_A-Za-z0-9]+\z};
 
     my $logger  = Log::Dispatchouli->new({
       ident    => 'cronjob',
@@ -225,7 +227,9 @@ END_TEMPLATE
 
 {
   package App::Cronjob::Exception;
-our $VERSION = '1.100080';
+BEGIN {
+  $App::Cronjob::Exception::VERSION = '1.101230';
+}
   sub new {
     my ($class, $type, $text) = @_;
     bless { text => $text, type => $type } => $class;
@@ -243,7 +247,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.100080
+version 1.101230
 
 =head1 SEE INSTEAD
 
