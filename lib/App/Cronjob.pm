@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package App::Cronjob;
 BEGIN {
-  $App::Cronjob::VERSION = '1.101230';
+  $App::Cronjob::VERSION = '1.101660';
 }
 # ABSTRACT: wrap up programs to be run as cron jobs
 
@@ -212,8 +212,6 @@ sub send_cronjob_report {
 }
 
 BEGIN {
-# Sure, a here-doc would be nicer, but PPI hates here-docs, I use PodPurler,
-# and PodPurler uses PPI.  Oh well. -- rjbs, 2009-04-21
 $TEMPLATE = <<'END_TEMPLATE'
 Command: { $command }
 Time   : { $time }s
@@ -228,7 +226,7 @@ END_TEMPLATE
 {
   package App::Cronjob::Exception;
 BEGIN {
-  $App::Cronjob::Exception::VERSION = '1.101230';
+  $App::Cronjob::Exception::VERSION = '1.101660';
 }
   sub new {
     my ($class, $type, $text) = @_;
@@ -247,7 +245,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.101230
+version 1.101660
 
 =head1 SEE INSTEAD
 
@@ -257,13 +255,15 @@ substantially until such point as it is documented.
 Instead of using the library, you should run the program F<cronjob> that is
 installed along with the library.
 
+For a full description of the program's behavior, consult L<cronjob>.
+
 =head1 AUTHOR
 
-  Ricardo Signes <rjbs@cpan.org>
+Ricardo Signes <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo Signes.
+This software is copyright (c) 2009 by Ricardo Signes.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
