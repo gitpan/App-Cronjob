@@ -1,5 +1,9 @@
 Revision history for App-Cronjob
 
+1.102310  2010-08-19 12:40:51 America/New_York
+          add an Auto-Submitted: auto-generated header (RFC 3834)
+          documentation typos fixed (thanks, chromatic)
+
 1.101660  2010-06-15 17:01:46 America/New_York
           added some more documentation to cronjob
 

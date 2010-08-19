@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package App::Cronjob;
 BEGIN {
-  $App::Cronjob::VERSION = '1.101660';
+  $App::Cronjob::VERSION = '1.102310';
 }
 # ABSTRACT: wrap up programs to be run as cron jobs
 
@@ -199,6 +199,7 @@ sub send_cronjob_report {
       From    => qq{"cron/$host" <$sender>},
       Subject => $subject,
       'In-Reply-To' => $irt,
+      'Auto-Submitted' => 'auto-generated',
     ],
   );
 
@@ -226,7 +227,7 @@ END_TEMPLATE
 {
   package App::Cronjob::Exception;
 BEGIN {
-  $App::Cronjob::Exception::VERSION = '1.101660';
+  $App::Cronjob::Exception::VERSION = '1.102310';
 }
   sub new {
     my ($class, $type, $text) = @_;
@@ -245,7 +246,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.101660
+version 1.102310
 
 =head1 SEE INSTEAD
 
