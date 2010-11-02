@@ -1,5 +1,9 @@
 Revision history for App-Cronjob
 
+1.102311  2010-11-02 17:09:23 America/New_York
+          lockfile now includes cronjob's pid
+          "can't locked, already locked" message now includes lockfile name
+
 1.102310  2010-08-19 12:40:51 America/New_York
           add an Auto-Submitted: auto-generated header (RFC 3834)
           documentation typos fixed (thanks, chromatic)

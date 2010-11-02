@@ -12,7 +12,7 @@ my %WriteMakefileArgs = (
   'ABSTRACT' => 'wrap up programs to be run as cron jobs',
   'AUTHOR' => 'Ricardo Signes <rjbs@cpan.org>',
   'BUILD_REQUIRES' => {
-    'Test::More' => '0'
+    'Test::More' => '0.96'
   },
   'CONFIGURE_REQUIRES' => {
     'ExtUtils::MakeMaker' => '6.31'
@@ -38,7 +38,7 @@ my %WriteMakefileArgs = (
     'Text::Template' => '0',
     'Time::HiRes' => '0'
   },
-  'VERSION' => '1.102310',
+  'VERSION' => '1.102311',
   'test' => {
     'TESTS' => 't/*.t'
   }

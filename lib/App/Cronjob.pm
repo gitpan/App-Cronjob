@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package App::Cronjob;
 BEGIN {
-  $App::Cronjob::VERSION = '1.102310';
+  $App::Cronjob::VERSION = '1.102311';
 }
 # ABSTRACT: wrap up programs to be run as cron jobs
 
@@ -74,7 +74,7 @@ sub run {
         if (my $mtime = (stat $lockfile)[9]) {
           my $stamp = scalar localtime $mtime;
           die App::Cronjob::Exception->new(
-            lock => "can't lock; locked since $stamp"
+            lock => "can't lock; $lockfile locked since $stamp"
           );
         } 
 
@@ -93,8 +93,8 @@ sub run {
 
     $got_lock = 1;
 
-    printf $lock_fh "running %s\nstarted at %s\n",
-      $opt->{command}, scalar localtime $^T;
+    printf $lock_fh "running %s\nstarted at %s\ncronjob process %s\n",
+      $opt->{command}, scalar localtime $^T, $$;
 
     LOCKED:
 
@@ -227,7 +227,7 @@ END_TEMPLATE
 {
   package App::Cronjob::Exception;
 BEGIN {
-  $App::Cronjob::Exception::VERSION = '1.102310';
+  $App::Cronjob::Exception::VERSION = '1.102311';
 }
   sub new {
     my ($class, $type, $text) = @_;
@@ -246,7 +246,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.102310
+version 1.102311
 
 =head1 SEE INSTEAD
 
