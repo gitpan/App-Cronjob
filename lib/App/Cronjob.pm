@@ -1,16 +1,16 @@
 use strict;
 use warnings;
 package App::Cronjob;
-BEGIN {
-  $App::Cronjob::VERSION = '1.102311';
+{
+  $App::Cronjob::VERSION = '1.200000';
 }
 # ABSTRACT: wrap up programs to be run as cron jobs
 
 use Digest::MD5 qw(md5_hex);
 use Errno;
-use Fcntl;
+use Fcntl qw( :DEFAULT :flock );
 use Getopt::Long::Descriptive;
-use IPC::Run3 qw(run3);       
+use IPC::Run3 qw(run3);
 use Log::Dispatchouli;
 use String::Flogger;
 use Sys::Hostname::Long;
@@ -55,7 +55,7 @@ sub run {
   my $lockfile = sprintf '/tmp/cronjob.%s',
                  $opt->{jobname} || md5_hex($subject);
 
-  my $got_lock = 0;
+  my $got_lock;
 
   my $okay = eval {
     die "illegal job name: $opt->{jobname}\n"
@@ -66,37 +66,28 @@ sub run {
       facility => 'cron',
     });
 
-    goto LOCKED if ! $opt->{lock};
-
-    my $ok = sysopen my $lock_fh, $lockfile, O_CREAT|O_EXCL|O_WRONLY;
-    unless ($ok) {
-      if ($!{EEXIST}) {
-        if (my $mtime = (stat $lockfile)[9]) {
-          my $stamp = scalar localtime $mtime;
-          die App::Cronjob::Exception->new(
-            lock => "can't lock; $lockfile locked since $stamp"
-          );
-        } 
-
-        # We couldn't get mtime, presumably because the file got deleted
-        # between the EEXIST and the stat.  Stupid race conditions! -- rjbs,
-        # 2009-02-18
-        die App::Cronjob::Exception->new(
-          lock => "can't lock; was locked already"
+    my $lock_fh;
+    if ($opt->lock) {
+      sysopen $lock_fh, $lockfile, O_CREAT|O_WRONLY
+        or die App::Cronjob::Exception->new(
+          lockfile => "couldn't open lockfile $lockfile: $!"
         );
-      } else {
+
+      my $lock_flags = LOCK_EX | LOCK_NB;
+
+      unless (flock $lock_fh, $lock_flags) {
+        my $mtime = (stat $lock_fh)[9];
+        my $stamp = scalar localtime $mtime;
         die App::Cronjob::Exception->new(
-          lock => "couldn't open lockfile $lockfile: $!"
+          lock => "can't lock; locked since $stamp",
         );
       }
+
+      printf $lock_fh "running %s\nstarted at %s\n",
+        $opt->{command}, scalar localtime $^T;
+
+      $got_lock = 1;
     }
-
-    $got_lock = 1;
-
-    printf $lock_fh "running %s\nstarted at %s\ncronjob process %s\n",
-      $opt->{command}, scalar localtime $^T, $$;
-
-    LOCKED:
 
     $logger->log([ 'trying to run %s', $opt->{command} ]);
 
@@ -138,8 +129,6 @@ sub run {
 
     1;
   };
-
-  unlink $lockfile if $got_lock and -e $lockfile;
 
   exit 0 if $okay;
   my $err = $@;
@@ -226,8 +215,8 @@ END_TEMPLATE
 
 {
   package App::Cronjob::Exception;
-BEGIN {
-  $App::Cronjob::Exception::VERSION = '1.102311';
+{
+  $App::Cronjob::Exception::VERSION = '1.200000';
 }
   sub new {
     my ($class, $type, $text) = @_;
@@ -238,6 +227,7 @@ BEGIN {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -246,7 +236,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.102311
+version 1.200000
 
 =head1 SEE INSTEAD
 
@@ -270,4 +260,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
