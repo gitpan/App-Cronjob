@@ -52,7 +52,6 @@ eval { $v .= pmver('Digest::MD5','any version') };
 eval { $v .= pmver('Email::Sender::Simple','0.091661') };
 eval { $v .= pmver('Email::Simple','any version') };
 eval { $v .= pmver('Email::Simple::Creator','any version') };
-eval { $v .= pmver('Errno','any version') };
 eval { $v .= pmver('ExtUtils::MakeMaker','6.30') };
 eval { $v .= pmver('Fcntl','any version') };
 eval { $v .= pmver('File::Find','any version') };

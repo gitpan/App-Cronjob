@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package App::Cronjob;
 {
-  $App::Cronjob::VERSION = '1.200000';
+  $App::Cronjob::VERSION = '1.200001';
 }
 # ABSTRACT: wrap up programs to be run as cron jobs
 
@@ -216,7 +216,7 @@ END_TEMPLATE
 {
   package App::Cronjob::Exception;
 {
-  $App::Cronjob::Exception::VERSION = '1.200000';
+  $App::Cronjob::Exception::VERSION = '1.200001';
 }
   sub new {
     my ($class, $type, $text) = @_;
@@ -236,7 +236,7 @@ App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.200000
+version 1.200001
 
 =head1 SEE INSTEAD
 

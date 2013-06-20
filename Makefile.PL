@@ -26,7 +26,6 @@ my %WriteMakefileArgs = (
     "Email::Sender::Simple" => "0.091661",
     "Email::Simple" => 0,
     "Email::Simple::Creator" => 0,
-    "Errno" => 0,
     "Fcntl" => 0,
     "Getopt::Long::Descriptive" => 0,
     "IPC::Run3" => 0,
@@ -43,7 +42,7 @@ my %WriteMakefileArgs = (
     "File::Temp" => 0,
     "Test::More" => "0.96"
   },
-  "VERSION" => "1.200000",
+  "VERSION" => "1.200001",
   "test" => {
     "TESTS" => "t/*.t"
   }
