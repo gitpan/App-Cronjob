@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package App::Cronjob;
 {
-  $App::Cronjob::VERSION = '1.200001';
+  $App::Cronjob::VERSION = '1.200002';
 }
 # ABSTRACT: wrap up programs to be run as cron jobs
 
@@ -64,6 +64,8 @@ sub run {
     my $logger  = Log::Dispatchouli->new({
       ident    => 'cronjob',
       facility => 'cron',
+      log_pid  => 0,
+      (defined $opt->{jobname} ? (prefix => "$opt->{jobname}: ") : ()),
     });
 
     my $lock_fh;
@@ -216,7 +218,7 @@ END_TEMPLATE
 {
   package App::Cronjob::Exception;
 {
-  $App::Cronjob::Exception::VERSION = '1.200001';
+  $App::Cronjob::Exception::VERSION = '1.200002';
 }
   sub new {
     my ($class, $type, $text) = @_;
@@ -230,13 +232,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 App::Cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.200001
+version 1.200002
 
 =head1 SEE INSTEAD
 

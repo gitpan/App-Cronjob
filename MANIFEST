@@ -8,7 +8,6 @@ README
 bin/cronjob
 dist.ini
 lib/App/Cronjob.pm
-t/00-compile.t
 t/00-pointless.t
 t/000-report-versions-tiny.t
 xt/release/changes_has_content.t

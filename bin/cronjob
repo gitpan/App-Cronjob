@@ -12,13 +12,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.200001
+version 1.200002
 
 =head1 SYNOPSIS
 
