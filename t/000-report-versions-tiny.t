@@ -57,6 +57,7 @@ eval { $v .= pmver('Fcntl','any version') };
 eval { $v .= pmver('Getopt::Long::Descriptive','any version') };
 eval { $v .= pmver('IPC::Run3','any version') };
 eval { $v .= pmver('Log::Dispatchouli','any version') };
+eval { $v .= pmver('Process::Status','0.002') };
 eval { $v .= pmver('String::Flogger','any version') };
 eval { $v .= pmver('Sys::Hostname::Long','any version') };
 eval { $v .= pmver('Test::More','0.96') };
