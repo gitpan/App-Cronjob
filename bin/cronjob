@@ -8,6 +8,89 @@ package
 use App::Cronjob;
 App::Cronjob->run;
 
+#pod =head1 SYNOPSIS
+#pod
+#pod   cronjob [-cEfjrs] [long options...]
+#pod     -c --command          command to run (passed to ``)
+#pod     -s --subject          subject of mail to send (defaults to command)
+#pod     -r --rcpt             recipient of mail; may be given many times
+#pod     -E --errors-only      do not send mail if exit code 0, even with output
+#pod     -f --sender           sender for message
+#pod     -j --jobname          job name; used for locking, if given
+#pod     --lock                lock this job (defaults to true; --no-lock for off)
+#pod     --ignore-errors       error types to ignore (like: lock)
+#pod     --temp-ignore-lock-errors
+#pod                           ignore locking errors, but only if the lock is at least this old
+#pod
+#pod =head1 DESCRIPTION
+#pod
+#pod F<cronjob> is a fairly simple Perl program that's meant to be used to wrap
+#pod anything you want run from a F<crontab>.  It was originally written to cope
+#pod with the highly deficient Solaris F<crond>, but now provides features that are
+#pod useful even under relatively sane and otherwise tolerable cron daemons.
+#pod
+#pod The most important argument to F<cronjob> is C<--command> (aka C<-c>).  It
+#pod gives the command to be run.  If you want to run F<some-maintenance-job> every
+#pod day at noon, you might put this in your F<crontab>:
+#pod
+#pod   0 12 * * *           cronjob -c 'some-maintenance-job --xyzzy'
+#pod
+#pod Here's what will happen when that job is run:
+#pod
+#pod Unless you provided C<--no-lock>, an exclusive lock will be created on a
+#pod temporary file in F</tmp>.  The locking process is described more
+#pod L<below|/locking>.  Basically, it tries to prevent more than one of the same,
+#pod or closely-related, jobs from running concurrently.
+#pod
+#pod The job will be run with no input.  Its combined STDOUT and STDERR are
+#pod captured, along with its exit (wait) status.
+#pod
+#pod When the command has terminated, a report is sent if:
+#pod
+#pod =for :list
+#pod * the command couldn't lock (unless C<--ignore-errors lock> or,
+#pod   if C<--temp-ignore-lock-errors=>I<secs> was given,
+#pod   the lock was created no more than I<secs> seconds ago.
+#pod * the command had any output (unless C<--errors-only>)
+#pod * the command exited non-zero (always)
+#pod
+#pod The report will include a summary of the process and its behavior, including
+#pod the time taken to run, the exit status, any signal received, and whether core
+#pod was dumped.  It will also include the full (combined) output of the process.
+#pod
+#pod The report will be send from C<--sender> (or a reasonable default) to C<--rcpt>
+#pod (or C<root>).  Its C<In-Reply-To> header will be set to a hashed value that
+#pod will cause all same-subject jobs to thread together in threaded mail readers.
+#pod The C<--subject> switch sets the message subject, so it's responsible for
+#pod deciding which jobs thread together.  For jobs that run with variable
+#pod arguments, providing a C<--subject> argument is a very good idea.
+#pod
+#pod =head2 locking
+#pod
+#pod The default lockfile name is generated with code something like this:
+#pod
+#pod   my $lockname = $opt->jobname || ( md5_sum( $opt->subject || $opt->command ) );
+#pod   my $lockfile = sprintf '/tmp/cronjob.%s', $lockname;
+#pod
+#pod In other words, if you specify a C<--jobname> option, that will be used for
+#pod naming the lockfile.  This lets you force otherwise unrelated cronjobs to block
+#pod each other.  If you don't provide a job name, one is created by hashing the
+#pod subject (of the report to send) or, failing that, the command itself.  The
+#pod hashing is a simple measure to prevent long or metacharacter-ridden filenames.
+#pod
+#pod The lockfile will contain information about the process that has the lock,
+#pod including when it was begun.
+#pod
+#pod By default, all jobs are locked and failure to acquire a lock causes immediate
+#pod failure of the cronjob.  A failure report will be sent.  To suppress failure
+#pod reports in the event of lock failure, pass C<--ignore-errors lock> to the
+#pod command.  To skip locking, pass C<--no-lock>.
+#pod
+#pod Note that ignoring C<lock> failures only ignores failure to C<flock> the
+#pod lockfile.  If the file can't even be created, an error will still be reported.
+#pod It will be of type C<lockfile>, and can be ignored by adding another
+#pod C<--ignore-errors> option for that type.
+
 __END__
 
 =pod
@@ -20,7 +103,7 @@ cronjob - wrap up programs to be run as cron jobs
 
 =head1 VERSION
 
-version 1.200003
+version 1.200004
 
 =head1 SYNOPSIS
 
@@ -31,8 +114,10 @@ version 1.200003
     -E --errors-only      do not send mail if exit code 0, even with output
     -f --sender           sender for message
     -j --jobname          job name; used for locking, if given
-    --ignore-errors       error types to ignore (like: lock)
     --lock                lock this job (defaults to true; --no-lock for off)
+    --ignore-errors       error types to ignore (like: lock)
+    --temp-ignore-lock-errors
+                          ignore locking errors, but only if the lock is at least this old
 
 =head1 DESCRIPTION
 
@@ -63,7 +148,7 @@ When the command has terminated, a report is sent if:
 
 =item *
 
-the command couldn't lock (unless C<--ignore-errors lock>)
+the command couldn't lock (unless C<--ignore-errors lock> or, if C<--temp-ignore-lock-errors=>I<secs> was given, the lock was created no more than I<secs> seconds ago.
 
 =item *
 
